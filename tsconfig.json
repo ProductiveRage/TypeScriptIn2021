@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+  
+    "jsx": "react",
+    "esModuleInterop": true, // Required for "jsx": "react"
+    "target": "es2015", // Required for "immutable" library
+    "moduleResolution": "node" // Required for "immutable" library
+  }
+}

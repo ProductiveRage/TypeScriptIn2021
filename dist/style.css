@@ -1,0 +1,237 @@
+@charset "UTF-8";
+.alert-list ul li.alert {
+  width: 50%;
+  border: 1px solid black;
+  border-radius: 2px;
+  margin: 16px auto 8px;
+  padding: 8px;
+  line-height: 1.8;
+}
+.alert-list ul li.alert h3 {
+  font-size: 120%;
+}
+.alert-list ul li.alert .details .symbol {
+  font-weight: bold;
+  padding-right: 0.25rem;
+}
+.alert-list ul li.alert .details .increase {
+  padding-right: 0.25rem;
+}
+.alert-list ul li.alert .details .positive {
+  color: green;
+}
+.alert-list ul li.alert .details .negative {
+  color: red;
+}
+
+.alerts {
+  text-align: center;
+}
+.alerts section.main {
+  margin-top: 8px;
+}
+.alerts .no-stocks {
+  padding: 8px 0;
+  opacity: 0.3;
+}
+.alerts button.reload {
+  margin: 8px 0;
+}
+
+.error-message {
+  color: red;
+}
+
+h1.header-message {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 16px 0 8px;
+  text-align: center;
+}
+
+.loading {
+  opacity: 0.3;
+}
+
+.app-loading {
+  animation: 3s ease 0s normal forwards 1 appLoadingfadein;
+}
+
+@keyframes appLoadingfadein {
+  0% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+.popup .content {
+  width: 50%;
+  height: 50%;
+  overflow: auto;
+  padding: 16px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+.popup .content h3 {
+  font-weight: bold;
+}
+.popup .content section {
+  flex-grow: 1;
+}
+.popup .content footer.buttons {
+  text-align: right;
+}
+
+.popup.add-alert .main {
+  flex: 1;
+}
+.popup.add-alert .main h3 span.symbol {
+  font-weight: normal;
+}
+.popup.add-alert .main input.alert-point {
+  margin: 16px 8px 16px;
+}
+.popup.add-alert .main span.notes {
+  padding-left: 8px;
+  opacity: 0.3;
+}
+.popup.add-alert div.buttons {
+  text-align: right;
+}
+.popup.add-alert div.buttons button {
+  margin-left: 8px;
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html, body, div, span, object, iframe, figure, h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, a, code, em, img, small, strike, strong, sub, sup, tt, b,
+u, i, ol, ul, li, fieldset, form, label, table, caption, tbody, tfoot, thead,
+tr, th, td, main, canvas, embed, footer, header, nav, section, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: none;
+}
+
+footer, header, nav, section, main {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.stock-adder {
+  text-align: center;
+  margin: 8px 0;
+}
+.stock-adder .no-options {
+  opacity: 0.3;
+}
+.stock-adder button.add {
+  margin-left: 8px;
+}
+
+table.stock-list {
+  width: 100%;
+  margin: 8px 0;
+}
+table.stock-list th {
+  font-weight: bold;
+  background: #c0c0c0;
+}
+table.stock-list th a.sortable {
+  cursor: pointer;
+}
+table.stock-list th a.sortable::after {
+  content: " ⇳";
+}
+table.stock-list th, table.stock-list td {
+  padding: 8px;
+  text-align: center;
+}
+table.stock-list td input[type=checkbox] {
+  appearance: checkbox;
+}
+table.stock-list td a.alerts {
+  cursor: pointer;
+  padding-right: 8px;
+  text-decoration: underline;
+  color: blue;
+}
+table.stock-list tr.even td {
+  background: #f1f1f1;
+}
+table.stock-list tr.none-selected td {
+  opacity: 0.5;
+  padding: 16px 0;
+}
+
+.stock-tracker {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.stock-tracker header {
+  text-align: center;
+}
+.stock-tracker section.main {
+  flex: 1;
+  overflow-y: auto;
+  text-align: center;
+}
+.stock-tracker button.reload {
+  margin: 8px 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}

@@ -1,0 +1,33 @@
+table.stock-list
+  width: 100%
+  margin: 8px 0
+
+  th
+    font-weight: bold
+    background: #c0c0c0
+
+    a.sortable
+      cursor: pointer
+      &::after
+       content: " ⇳"
+
+  th, td
+    padding: 8px
+    text-align: center
+
+  td
+    input[type="checkbox"]
+      appearance: checkbox
+
+    a.alerts
+      cursor: pointer
+      padding-right: 8px
+      text-decoration: underline
+      color: blue
+
+  tr.even td
+    background: #f1f1f1
+
+  tr.none-selected td
+    opacity: 0.5
+    padding: 16px 0
