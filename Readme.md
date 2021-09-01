@@ -20,6 +20,8 @@ Let's call it a "non-trivial toy project"! It is a simple app that allows you to
 
 By default, this service would run locally at localhost:3000 but this could be changed in the src/config.ts file
 
+To add stocks to the 'Stock Viewer' list, there is a dropdown of available stock symbols and an 'Add' button at the bottom of the page.
+
 ### Goals and limitations
 
 As a toy-ish project, I applied constraints as what to what I implemented - the more complex that something is, the longer it takes to write and, unless there is a compelling case for doing so, the more faffing around you're doing for litle benefit.
@@ -54,3 +56,14 @@ As I said, I could have gone absolutely crazy on gold-plating this, so let's tal
 ### Summary
 
 I'm sure that there is plenty to pick at regarding why I did or didn't do particular things or take particular approaches but, on the whole, this has been fun! It is really exciting to see how quickly TypeScript moves (I still credit it for us *finally* getting nullable reference types in C#, that I've been loving!)
+
+### Building
+
+The repo includes a built version of the project, so you can open dist/index.html directly in the browser. However, if you want to build it from scratch then it's a standard process of opening the root of the project in the command line and running:
+
+````
+npm install
+gulp
+````
+
+This will recreate the 'dist' folder and you can open the index.html file from there.
