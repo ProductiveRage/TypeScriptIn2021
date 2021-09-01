@@ -16,6 +16,7 @@ It's been about 18 months since I last tried this and so it seems like *everythi
 Let's call it a "non-trivial toy project"! It is a simple app that allows you to construct a list of stocks that you're excited by, to set alerts on those stocks so that if their prices change by a given amount since the 'opening price' of the day and, if so, alerts you to this fact. It is the UI code only and relies up another service to provide the stock data that must have the following endpoints:
 
 **/static/tickers** - returns an array or stock string IDs (aka "symbols))
+
 **/prices/SYM1,SYM2** - takes an array of symbols and returns an array of entries where each symbol maps on to an opening price, bid and ask prices plus a "last volume" quantity
 
 By default, this service would run locally at localhost:3000 but this could be changed in the src/config.ts file
