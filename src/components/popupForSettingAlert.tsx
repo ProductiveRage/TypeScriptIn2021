@@ -17,7 +17,7 @@ export default class PopupForSettingAlert extends Component<Props, State> {
     return (
       <Popup className="add-alert">
         <div className="main">
-          <h3>EdiAlert: <span className="symbol">{this.props.stockToSetAlertFor.symbol}</span></h3>
+          <h3>Edit Alert: <span className="symbol">{this.props.stockToSetAlertFor.symbol}</span></h3>
           <span>Percentage change</span>
           <input
             className="alert-point"

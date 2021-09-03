@@ -96,7 +96,7 @@ export default class StockTracker extends Component<Props, State> {
             : <PopupForSettingAlert
                 stockToSetAlertFor={symbolToSetAlertFor}
                 ok={priceDeviationPercentageForAlert => this.updateStockAlert(new SelectedStockSymbol(symbolToSetAlertFor.symbol, priceDeviationPercentageForAlert))}
-                cancel={this.hideAlertPopup} />
+                cancel={() => this.hideAlertPopup()} />
         }
       </Fragment>
     )
