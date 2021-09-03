@@ -42,7 +42,7 @@ export default class AlertList extends PureComponent<Props> {
     const stocksToAlertFor = stocksWithAlerts
       .map(stock => {
         const increase = limitToSafePrecision(limitToSafePrecision(stock.bid) - limitToSafePrecision(stock.open))
-        const increaseAsPercentageOfOpening = increase / limitToSafePrecision(stock.open)
+        const increaseAsPercentageOfOpening = (increase / limitToSafePrecision(stock.open)) * 100
         return { stock, increaseAsPercentageOfOpening }
       })
       .filter(stockAndPriceChange => {
@@ -69,11 +69,15 @@ export default class AlertList extends PureComponent<Props> {
             .map(stockAndPriceChange =>
               <li className="alert" key={stockAndPriceChange.stock.symbol}>
                 {
-                  this.renderAlert(
-                    stockAndPriceChange.stock.symbol,
-                    stockAndPriceChange.increaseAsPercentageOfOpening,
-                    stockAndPriceChange.stock.retrieved
-                  )
+                  <Fragment>
+                    <h3>{stockAndPriceChange.stock.symbol} @ {retrievedDateFormat.format(stockAndPriceChange.stock.retrieved)}</h3>
+                    <div className="details">
+                      <span className="symbol">{stockAndPriceChange.stock.symbol + '\'s'}</span>
+                      BID price moved {AlertList.renderPriceChange(stockAndPriceChange.increaseAsPercentageOfOpening)}
+                      from the opening price at {retrievedDateFormat.format(stockAndPriceChange.stock.retrieved)} today
+                    </div>
+                    <button onClick={_ => this.props.removeAlert(stockAndPriceChange.stock.symbol)}>Remove alert</button>
+                  </Fragment>
                 }
               </li>
             )
@@ -82,22 +86,8 @@ export default class AlertList extends PureComponent<Props> {
     )
   }
 
-  private renderAlert (symbol: string, increaseAsPercentageOfOpening: number, retrieved: Date) {
-    return (
-      <Fragment>
-        <h3>{symbol} @ {retrievedDateFormat.format(retrieved)}</h3>
-        <div className="details">
-          <span className="symbol">{symbol + '\'s'}</span>
-          BID price moved {AlertList.renderIncreasePercentage(increaseAsPercentageOfOpening)}
-          from the opening price at {retrievedDateFormat.format(retrieved)} today
-        </div>
-        <button onClick={_ => this.props.removeAlert(symbol)}>Remove alert</button>
-      </Fragment>
-    )
-  }
-
-  private static renderIncreasePercentage (increaseAsPercentageOfOpening: number) {
+  private static renderPriceChange (increaseAsPercentageOfOpening: number) {
     const className = 'increase ' + ((increaseAsPercentageOfOpening > 0) ? 'positive' : 'negative')
-    return <span className={className}>{increaseAsPercentageOfOpening.toFixed(4)}%</span>
+    return <span className={className}>{increaseAsPercentageOfOpening.toFixed(2)}%</span>
   }
 }

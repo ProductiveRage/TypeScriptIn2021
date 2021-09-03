@@ -33,12 +33,12 @@ export default class StockList extends PureComponent<Props> {
       <table className='stock-list'>
         <thead>
           <tr>
-            <SortOptionHeader sort={() => this.applySort(StockOrderTracker.symbolOrder)} message='Symbol' />
-            <SortOptionHeader sort={() => this.applySort(StockOrderTracker.bidOrder)} message='Bid' />
-            <SortOptionHeader sort={() => this.applySort(StockOrderTracker.askOrder)} message='Ask' />
-            <SortOptionHeader sort={() => this.applySort(StockOrderTracker.lastVolOrder)} message='Vol' />
-            <SortOptionHeader sort={() => this.applySort(StockOrderTracker.openOrder)} message='Opened At' />
-            <SortOptionHeader sort={() => this.applySort(StockOrderTracker.hasAlertOrder)} message='Alerts' />
+            <SortOptionHeader sort={this.getApplySort(StockOrderTracker.symbolOrder)} message='Symbol' />
+            <SortOptionHeader sort={this.getApplySort(StockOrderTracker.bidOrder)} message='Bid' />
+            <SortOptionHeader sort={this.getApplySort(StockOrderTracker.askOrder)} message='Ask' />
+            <SortOptionHeader sort={this.getApplySort(StockOrderTracker.lastVolOrder)} message='Vol' />
+            <SortOptionHeader sort={this.getApplySort(StockOrderTracker.openOrder)} message='Opened At' />
+            <SortOptionHeader sort={this.getApplySort(StockOrderTracker.hasAlertOrder)} message='Alerts' />
             <th>Retrieved</th>
             <th>Options</th>
           </tr>
@@ -71,6 +71,10 @@ export default class StockList extends PureComponent<Props> {
         </tbody>
       </table>
     )
+  }
+
+  private getApplySort (order: StockOrderer) {
+    return () => this.applySort(order)
   }
 
   private applySort (order: StockOrderer) {

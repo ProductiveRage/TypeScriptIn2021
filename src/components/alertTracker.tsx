@@ -16,32 +16,35 @@ interface Props {
 
 export default class AlertTracker extends PureComponent<Props> {
   render () {
+    // Take a copy of this.props.removealerts so that we can pass it on to the AlertList's 'removeAlert' prop without
+    // having to use a fat arrow
+    const removeAlert = this.props.removeAlert
     return (
       <div className='alerts'>
         <header>
           <HeaderMessage title='Stock Alerts' />
           <button onClick={() => this.props.viewSelectedStocks()}>View Selected Stocks</button>
         </header>
-        <section className='main'>{this.renderMainContent()}</section>
+        <section className='main'>
+          {
+            AlertTracker.renderRetrievalResponse(
+              this.props.stocks,
+              stocks =>
+                <Fragment>
+                  <AlertList stocks={stocks} removeAlert={removeAlert} />
+                  <button className="reload" onClick={_ => this.props.reloadSelectedStocks()}>Refresh</button>
+                </Fragment>,
+              () => <Loading />,
+              error => (
+                <Fragment>
+                  <ErrorMessage message={`Failed to retrieve selected stocks: ${error.message}`} />
+                  <button className="reload" onClick={_ => this.props.reloadSelectedStocks()}>Try to reload</button>
+                </Fragment>
+              )
+            )
+          }
+        </section>
      </div>
-    )
-  }
-
-  private renderMainContent () {
-    return AlertTracker.renderRetrievalResponse(
-      this.props.stocks,
-      stocks =>
-        <Fragment>
-          <AlertList stocks={stocks} removeAlert={symbol => this.props.removeAlert(symbol)} />
-          <button className="reload" onClick={_ => this.props.reloadSelectedStocks()}>Refresh</button>
-        </Fragment>,
-      () => <Loading />,
-      error => (
-        <Fragment>
-          <ErrorMessage message={`Failed to retrieve selected stocks: ${error.message}`} />
-          <button className="reload" onClick={_ => this.props.reloadSelectedStocks()}>Try to reload</button>
-        </Fragment>
-      )
     )
   }
 

@@ -43,15 +43,18 @@ describe('StockSelectionTracker', () => {
 
       const container = document.createElement('div')
       document.body.appendChild(container)
+
+      const unmounted = function () {
+        // Require a callback from the component's componentWillUnmount method to
+        // confirm that the unmounting process has completed
+        expect(tracker.areThereAnyRegisteredChangeListeners()).toEqual(false)
+        done()
+      }
+
       ReactDOM.render(
         <StockSelectionTrackerListener
           tracker={tracker}
-          unmounted={() => {
-            // Require a callback from the component's componentWillUnmount method to
-            // confirm that the unmounting process has completed
-            expect(tracker.areThereAnyRegisteredChangeListeners()).toEqual(false)
-            done()
-          }} />,
+          unmounted={unmounted} />,
         container,
         () => {
           // Use the ReactDOM.render callback to be sure that the component has been mounted

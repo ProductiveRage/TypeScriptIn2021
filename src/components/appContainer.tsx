@@ -1,3 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
+// ^ This rule is most beneficial for PureComponents that have props with functions in that may be bound,
+//   which will prevent shallow equality checks on the built-in shouldComponentUpdate implementation.
+//   Since that isn't applicable to this stateful container component, we can disable the rule.
+
 import React, { Component, Fragment } from 'react'
 import { List } from 'immutable'
 import { StockSelectionTracker, State as StockViewerState, changeListener } from '../state/stockViewerState'
@@ -36,17 +41,18 @@ export default class AppContainer extends Component<Props, State> {
   }
 
   render () {
+    const currentStocksIfStateInitialised = StateValueRetriever(this.state, state => state.stocks)
     return (
       <Fragment>
         {
           StateValueRetriever(this.state, state => state.showingAlerts)
             ? <AlertTracker
-                stocks={StateValueRetriever(this.state, state => state.stocks)}
+                stocks={currentStocksIfStateInitialised}
                 removeAlert={symbol => this.updateStockAlert(new SelectedStockSymbol(symbol, 0))}
                 reloadSelectedStocks={() => this.tryToReloadSelectedStocks()}
                 viewSelectedStocks={() => this.setState({ showingAlerts: false })} />
             : <StockTracker
-                stocks={StateValueRetriever(this.state, state => state.stocks)}
+                stocks={currentStocksIfStateInitialised}
                 availableStockSymbols={StateValueRetriever(this.state, state => state.availableStockSymbols)}
                 selectedStockSortOrderTracker={this.props.selectedStockSortOrderTracker}
                 add={this.props.stateTracker.addStockSelection}

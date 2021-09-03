@@ -1,3 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
+// ^ This rule is most beneficial for PureComponents that have props with functions in that may be bound,
+//   which will prevent shallow equality checks on the built-in shouldComponentUpdate implementation.
+//   Since that isn't applicable to this stateful container component, we can disable the rule.
+
 import React, { Component, ReactElement, Fragment } from 'react'
 import { List } from 'immutable'
 import HeaderMessage from './headerMessage'
@@ -33,6 +38,7 @@ interface State {
 
 export default class StockTracker extends Component<Props, State> {
   render () {
+    const symbolToSetAlertFor = StateValueRetriever(this.state, state => state.stockToSetAlertFor)
     return (
       <Fragment>
         <div className='stock-tracker'>
@@ -40,23 +46,60 @@ export default class StockTracker extends Component<Props, State> {
             <HeaderMessage title='Stock Viewer' />
             <button onClick={() => this.props.viewAlerts()}>View Alerts</button>
           </header>
-          <section className='main'>{this.renderMainContent()}</section>
-          {this.renderFooter()}
+          <section className='main'>
+            {
+              StockTracker.renderRetrievalResponse(
+                this.props.stocks,
+                stocks =>
+                  <Fragment>
+                    <StockList
+                      stocks={stocks}
+                      remove={this.props.remove}
+                      sort={this.props.sort}
+                      setAlert={stock => this.showAlertPopup(stock)}
+                      selectedStockSortOrderTracker={this.props.selectedStockSortOrderTracker} />
+                    <button className="reload" onClick={_ => this.props.reloadSelectedStocks()}>Refresh</button>
+                  </Fragment>,
+                () => <Loading />,
+                error => (
+                  <Fragment>
+                    <ErrorMessage message={`Failed to retrieve selected stocks: ${error.message}`} />
+                    <button className="reload" onClick={_ => this.props.reloadSelectedStocks()}>Try to reload</button>
+                  </Fragment>
+                )
+              )
+            }
+          </section>
+          {
+            // Don't render the Footer and its StockAdder until the selected stocks
+            // data has loaded because trying to add a new stock to an unready list
+            // will fail
+            StockTracker.renderRetrievalResponse(
+              this.props.stocks,
+              stocks =>
+                <footer>
+                  {
+                    StockTracker.renderRetrievalResponse(
+                      this.props.availableStockSymbols,
+                      availableStockSymbols => <StockAdder availableStockSymbols={availableStockSymbols} add={this.props.add} />,
+                      null, // Don't show ANOTHER loading symbol - either retrieve the stocks that may be added or show an error
+                      error => <ErrorMessage message={`Failed to retrieve available stocks: ${error.message}`} />
+                    )
+                  }
+                </footer>
+            )
+          }
         </div>
-        {this.showAlertPopupIfNeeded()}
+        {
+          (symbolToSetAlertFor === null)
+            ? null
+            : <PopupForSettingAlert
+                stockToSetAlertFor={symbolToSetAlertFor}
+                ok={priceDeviationPercentageForAlert => this.updateStockAlert(new SelectedStockSymbol(symbolToSetAlertFor.symbol, priceDeviationPercentageForAlert))}
+                cancel={this.hideAlertPopup} />
+        }
       </Fragment>
     )
-  }
-
-  private showAlertPopupIfNeeded () {
-    const symbolToSetAlertFor = StateValueRetriever(this.state, state => state.stockToSetAlertFor)
-    return (symbolToSetAlertFor === null)
-      ? null
-      : <PopupForSettingAlert
-          stockToSetAlertFor={symbolToSetAlertFor}
-          ok={priceDeviationPercentageForAlert => this.updateStockAlert(
-            new SelectedStockSymbol(symbolToSetAlertFor.symbol, priceDeviationPercentageForAlert))}
-          cancel={() => this.hideAlertPopup()} />
   }
 
   private updateStockAlert (stock: SelectedStockSymbol) {
@@ -70,49 +113,6 @@ export default class StockTracker extends Component<Props, State> {
 
   private hideAlertPopup () {
     this.setState({ stockToSetAlertFor: null })
-  }
-
-  private renderMainContent () {
-    return StockTracker.renderRetrievalResponse(
-      this.props.stocks,
-      stocks =>
-        <Fragment>
-          <StockList
-            stocks={stocks}
-            remove={this.props.remove}
-            sort={this.props.sort}
-            setAlert={stock => this.showAlertPopup(stock)}
-            selectedStockSortOrderTracker={this.props.selectedStockSortOrderTracker} />
-          <button className="reload" onClick={_ => this.props.reloadSelectedStocks()}>Refresh</button>
-        </Fragment>,
-      () => <Loading />,
-      error => (
-        <Fragment>
-          <ErrorMessage message={`Failed to retrieve selected stocks: ${error.message}`} />
-          <button className="reload" onClick={_ => this.props.reloadSelectedStocks()}>Try to reload</button>
-        </Fragment>
-      )
-    )
-  }
-
-  private renderFooter () {
-    // Don't render the Footer and its StockAdder until the selected stocks
-    // data has loaded because trying to add a new stock to an unready list
-    // will fail
-    return StockTracker.renderRetrievalResponse(
-      this.props.stocks,
-      stocks =>
-        <footer>
-          {
-            StockTracker.renderRetrievalResponse(
-              this.props.availableStockSymbols,
-              availableStockSymbols => <StockAdder availableStockSymbols={availableStockSymbols} add={this.props.add} />,
-              null, // Don't show ANOTHER loading symbol - either retrieve the stocks that may be added or show an error
-              error => <ErrorMessage message={`Failed to retrieve available stocks: ${error.message}`} />
-            )
-          }
-        </footer>
-    )
   }
 
   // Would like this to be a generic TypeScript React component, really, but it's
