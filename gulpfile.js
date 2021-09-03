@@ -10,7 +10,7 @@ const Server = require('karma').Server;
 const karmaParseConfig = require('karma/lib/config').parseConfig;
 
 const entryPoint = 'src/app.tsx';
-const testFilesPattern = 'tests/*.ts*';
+const testFilesPattern = 'tests/**/*.ts*';
 const allTypeScriptFilesPattern = '**/*.ts*';
 const sassFilesPattern = 'src/**/*.sass';
 const htmlFilesPattern = 'src/**/*.html';

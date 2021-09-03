@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
-import { StockSelectionTracker, changeListener } from '../src/state/stockViewerState'
+import { StockSelectionTracker, changeListener } from '../../src/state/stockViewerState'
 
 interface Props {
   readonly tracker: StockSelectionTracker
